@@ -17,12 +17,8 @@ After the build is finished run the container:
 
 ## Webinterface
 
-Use the CUPS webinterface to configure your printers, it is available at
-
-    http://yourraspberryip:631
+Use the CUPS webinterface to configure your printers, it is available at `http://yourraspberryip:631`.
     
 The username for admin functions is `print`, the password is the one you specified during build.
 
-Configured printers should automatically show up in your google cloud print account:
-
-    https://www.google.com/cloudprint#printers
+Configured printers should automatically show up in your google cloud print account `https://www.google.com/cloudprint#printers`.
