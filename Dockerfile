@@ -1,6 +1,9 @@
 FROM resin/rpi-raspbian
 MAINTAINER kaiwa <github@kawa.in>
 
+ARG share-scope
+ARG proxy-name=raspberry
+
 RUN apt-get update && apt-get install -y \
   sudo \
   locales \
@@ -35,17 +38,22 @@ RUN useradd \
 COPY etc-cups/cupsd.conf /etc/cups/cupsd.conf
 EXPOSE 631
 
-# Cloudprint connector
+#
+# CLOUDPRINT CONNECTOR
+#
+
 RUN echo "deb http://mirrordirector.raspbian.org/raspbian/ stretch main contrib non-free rpi" >> /etc/apt/sources.list
 
 RUN apt-get update && apt-get install -y -t stretch \
     google-cloud-print-connector
 
-RUN gcp-cups-connector-util init --share-scope "kaiwatermann@gmail.com" --proxy-name="raspberry2" --local-printing-enable --cloud-printing-enable \
+RUN gcp-cups-connector-util init --share-scope "${share-scope}" --proxy-name="${proxy-name}" --local-printing-enable --cloud-printing-enable \
     && mv gcp-cups-connector.config.json /home/print/gcp-cups-connector.config.json \
     && chown print /home/print/gcp-cups-connector.config.json
 
+#
 # RUN CUPS AND GCP CONNECTOR WITH SUPERVISOR
+#
 
 RUN apt-get install supervisor
 RUN mkdir -p /var/log/supervisor

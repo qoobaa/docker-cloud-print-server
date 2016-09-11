@@ -8,6 +8,3 @@ services:
     volumes:
       - /var/run/dbus:/var/run/dbus
       - /dev/bus/usb:/dev/bus/usb
-#      - ./data/log/:/var/log/cups/
-#      - ./data/spool/:/var/spool/cups/
-#      - ./data/etc/:/etc/cups
