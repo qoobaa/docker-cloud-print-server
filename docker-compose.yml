@@ -2,14 +2,17 @@ version: '2'
 services:
   cups:
     container_name: cups
-    build: .
+    build:
+       context: .
+       args:
+         - proxy-name:${PROXY_NAME}
+         - share-scope:${SHARE_SCOPE}
+         - admin-password:${ADMIN_PASSWORD}
     privileged: true
     ports:
       - "631:631"
     volumes:
       - /var/run/dbus:/var/run/dbus
       - /dev/bus/usb:/dev/bus/usb
-    args:
-      - share-scope
-      - proxy-name:raspberry
-      - admin-password
+    command: /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+    tty: true

@@ -1,10 +1,6 @@
 FROM resin/rpi-raspbian
 MAINTAINER kaiwa <github@kawa.in>
 
-ARG share-scope
-ARG admin-password
-ARG proxy-name=raspberry
-
 RUN apt-get update && apt-get install -y \
   sudo \
   locales \
@@ -25,6 +21,12 @@ ENV LANG=en_US.UTF-8 \
   LC_ALL=en_US.UTF-8 \
   LANGUAGE=en_US:en
 
+RUN echo "deb http://mirrordirector.raspbian.org/raspbian/ stretch main contrib non-free rpi" >> /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y -t stretch \
+    google-cloud-print-connector
+
+ARG admin-password
 RUN useradd \
   --groups=sudo,lp,lpadmin \
   --create-home \
@@ -38,19 +40,15 @@ RUN useradd \
   && mkdir /var/lib/apt/lists/partial
 
 COPY config/cupsd.conf /etc/cups/cupsd.conf
-EXPOSE 631
 
-RUN echo "deb http://mirrordirector.raspbian.org/raspbian/ stretch main contrib non-free rpi" >> /etc/apt/sources.list
+COPY gcp-init.sh /opt/gcp-init.sh
 
-RUN apt-get update && apt-get install -y -t stretch \
-    google-cloud-print-connector
+ARG share-scope
+ARG proxy-name=raspberry
+RUN /opt/gcp-init.sh "${share-scope}" "${proxy-name}"
 
-RUN gcp-cups-connector-util init --share-scope "${share-scope}" --proxy-name="${proxy-name}" --local-printing-enable --cloud-printing-enable \
-    && mv gcp-cups-connector.config.json /home/print/gcp-cups-connector.config.json \
-    && chown print /home/print/gcp-cups-connector.config.json
-
-RUN mkdir -p /var/log/supervisor
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
+HEALTHCHECK CMD curl -f http://localhost:631/ || exit 1
