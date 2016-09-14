@@ -1,8 +1,11 @@
+[WIP] not functional yet >:-O
+
 # docker-cloud-print-server
 Raspberry Pi Docker CUPS Printserver with Google Cloud Print Connector
 
 ## Building & Start up
 
+    PROXY_NAME=raspberry \
     ADMIN_PASSWORD=mypassword \
     SHARE_SCOPE=mygoogleaddress@gmail.com \
     docker-compose up
