@@ -1,18 +1,23 @@
-version: '2'
+version: '2.0'
 services:
   cups:
-    container_name: cups
+    image: debian:jessie
     build:
-       context: .
-       args:
-         - proxy-name:${PROXY_NAME}
-         - share-scope:${SHARE_SCOPE}
-         - admin-password:${ADMIN_PASSWORD}
+       context: cups
     privileged: true
     ports:
-      - "631:631"
+      - 6631:631
     volumes:
       - /var/run/dbus:/var/run/dbus
       - /dev/bus/usb:/dev/bus/usb
-    command: /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
-    tty: true
+    env_file: .env
+
+  gcp:
+    image: debian:stretch
+    build:
+       context: gcp
+    env_file: .env
+    links:
+      - cups
+    environment:
+      - CUPS_SERVER=cups
