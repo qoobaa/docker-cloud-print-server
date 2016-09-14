@@ -3,7 +3,10 @@ Raspberry Pi Docker CUPS Printserver with Google Cloud Print Connector
 
 ## Building
 
-    docker build --build-arg share-scope=yourgmailaddress@gmail.com --build-arg admin-password=yourwebinterfacepw .
+    docker build \
+    --build-arg share-scope=yourgmailaddress@gmail.com \
+    --build-arg admin-password=yourwebinterfacepw \
+    .
     
 `admin-password` will be the password you use to log into the CUPS webinterface. `share-scope` is your Google email address or google groups address.
 
