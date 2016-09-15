@@ -7,17 +7,22 @@ services:
     privileged: true
     ports:
       - 6631:631
+    expose:
+      - 631
     volumes:
       - /var/run/dbus:/var/run/dbus
       - /dev/bus/usb:/dev/bus/usb
     env_file: .env
 
   gcp:
+    privileged: true
     image: debian:stretch
     build:
        context: gcp
     env_file: .env
     links:
       - cups
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     environment:
       - CUPS_SERVER=cups
