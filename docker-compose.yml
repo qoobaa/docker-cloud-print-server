@@ -19,7 +19,5 @@ services:
     env_file: .env
     links:
       - cups
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
     environment:
       - CUPS_SERVER=cups
