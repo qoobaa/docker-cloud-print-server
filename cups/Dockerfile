@@ -34,6 +34,6 @@ RUN useradd \
 
 COPY cupsd.conf /etc/cups/cupsd.conf
 
-CMD ["/usr/sbin/cupsd", "-f"]
+ENTRYPOINT ["/usr/sbin/cupsd", "-f"]
 
 HEALTHCHECK CMD curl -f http://localhost:631/ || exit 1

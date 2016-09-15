@@ -11,4 +11,4 @@ COPY gcp-init.sh /opt/gcp-init.sh
 
 RUN /opt/gcp-init.sh "${GCP_SHARE_SCOPE}" "${GCP_NAME}"
 
-CMD ["gcp-cups-connector", "--log-to-console"]
+ENTRYPOINT ["gcp-cups-connector", "--log-to-console"]
