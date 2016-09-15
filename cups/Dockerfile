@@ -20,12 +20,14 @@ ENV LANG=en_US.UTF-8 \
   LC_ALL=en_US.UTF-8 \
   LANGUAGE=en_US:en
 
+ARG CUPS_PASSWORD
+
 RUN useradd \
   --groups=sudo,lp,lpadmin \
   --create-home \
   --home-dir=/home/print \
   --shell=/bin/bash \
-  --password=$(mkpasswd ${CUPS_PASSWORD}) \
+  --password=$(mkpasswd $CUPS_PASSWORD) \
   print \
   && sed -i '/%sudo[[:space:]]/ s/ALL[[:space:]]*$/NOPASSWD:ALL/' /etc/sudoers \
   && apt-get clean \
@@ -34,6 +36,6 @@ RUN useradd \
 
 COPY cupsd.conf /etc/cups/cupsd.conf
 
-ENTRYPOINT ["/usr/sbin/cupsd", "-f"]
+CMD ["/usr/sbin/cupsd", "-f"]
 
 HEALTHCHECK CMD curl -f http://localhost:631/ || exit 1

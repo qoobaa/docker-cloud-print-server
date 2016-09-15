@@ -3,21 +3,23 @@ services:
   cups:
     build:
        context: cups
+       args:
+         - CUPS_PASSWORD=print
     privileged: true
     ports:
       - 6631:631
-    expose:
-      - 631
     volumes:
       - /var/run/dbus:/var/run/dbus
       - /dev/bus/usb:/dev/bus/usb
-    env_file: .env
 
   gcp:
     build:
        context: gcp
-    env_file: .env
+       args:
+         - GCP_SHARE_SCOPE=xxxx
+         - GCP_NAME=raspberry
+    privileged: true
     links:
       - cups
-    environment:
-      - CUPS_SERVER=cups
+    volumes:
+      - /var/run/dbus:/var/run/dbus

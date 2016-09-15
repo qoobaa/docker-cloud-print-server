@@ -7,8 +7,11 @@ RUN echo "deb http://mirrordirector.raspbian.org/raspbian/ stretch main contrib 
 RUN apt-get install -y -t stretch --no-upgrade \
     google-cloud-print-connector
 
-COPY gcp-init.sh /opt/gcp-init.sh
+ARG GCP_SHARE_SCOPE
+ARG GCP_NAME
 
-RUN /opt/gcp-init.sh "${GCP_SHARE_SCOPE}" "${GCP_NAME}"
+RUN gcp-cups-connector-util init --share-scope "$GCP_SHARE_SCOPE" --proxy-name="$GCP_NAME" --local-printing-enable --cloud-printing-enable
 
-ENTRYPOINT ["gcp-cups-connector", "--log-to-console"]
+COPY client.conf /etc/cups/client.conf
+
+CMD ["gcp-cups-connector", "--log-to-console"]
