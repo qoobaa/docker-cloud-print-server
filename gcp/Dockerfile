@@ -2,9 +2,9 @@ FROM resin/rpi-raspbian
 MAINTAINER kaiwa <github@kawa.in>
 
 RUN echo "deb http://mirrordirector.raspbian.org/raspbian/ stretch main contrib non-free rpi" >> /etc/apt/sources.list && \
-    apt-get update && apt-get install -y -t stretch \
-    ca-certificates \
-    ntpdate \
+    apt-get update
+    
+RUN apt-get install -y -t stretch --no-upgrade \
     google-cloud-print-connector
 
 COPY gcp-init.sh /opt/gcp-init.sh
