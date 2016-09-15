@@ -1,7 +1,6 @@
 version: '2.0'
 services:
   cups:
-    image: debian:jessie
     build:
        context: cups
     privileged: true
@@ -15,8 +14,6 @@ services:
     env_file: .env
 
   gcp:
-    privileged: true
-    image: debian:stretch
     build:
        context: gcp
     env_file: .env
