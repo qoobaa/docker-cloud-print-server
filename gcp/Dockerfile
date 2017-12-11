@@ -3,8 +3,8 @@ MAINTAINER kaiwa <github@kawa.in>
 
 RUN echo "deb http://mirrordirector.raspbian.org/raspbian/ stretch main contrib non-free rpi" >> /etc/apt/sources.list && \
     apt-get update
-    
-RUN apt-get install -y -t stretch --no-upgrade \
+
+RUN apt-get install -y -t stretch \
     google-cloud-print-connector
 
 ARG GCP_SHARE_SCOPE
